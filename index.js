@@ -1,3 +1,9 @@
+require('dotenv').config();
+const express = require('express');
+const { pool, testConnection } = require('./config/database');
+const { createTables } = require('./config/migrations');
+
+
 // Inicializar banco e servidor com tratamento de erro
 const startServer = async () => {
   try {
