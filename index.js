@@ -98,6 +98,61 @@ app.get('/api/consultas', (req, res) => {
   res.json({ message: 'Lista de consultas', data: consultas });
 });
 
+
+// PUT - Atualizar paciente
+app.put('/api/pacientes/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { nome, email, telefone, cpf, data_nascimento, endereco } = req.body;
+  
+  const index = pacientes.findIndex(p => p.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Paciente não encontrado' });
+  }
+  
+  pacientes[index] = { ...pacientes[index], nome, email, telefone, cpf, data_nascimento, endereco };
+  res.json({ message: 'Paciente atualizado com sucesso', data: pacientes[index] });
+});
+
+// DELETE - Excluir paciente
+app.delete('/api/pacientes/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = pacientes.findIndex(p => p.id === id);
+  
+  if (index === -1) {
+    return res.status(404).json({ error: 'Paciente não encontrado' });
+  }
+  
+  const deleted = pacientes.splice(index, 1);
+  res.json({ message: 'Paciente excluído com sucesso', data: deleted[0] });
+});
+
+// PUT - Atualizar médico
+app.put('/api/medicos/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { nome, email, crm, especialidade, telefone } = req.body;
+  
+  const index = medicos.findIndex(m => m.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Médico não encontrado' });
+  }
+  
+  medicos[index] = { ...medicos[index], nome, email, crm, especialidade, telefone };
+  res.json({ message: 'Médico atualizado com sucesso', data: medicos[index] });
+});
+
+// DELETE - Excluir médico
+app.delete('/api/medicos/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = medicos.findIndex(m => m.id === id);
+  
+  if (index === -1) {
+    return res.status(404).json({ error: 'Médico não encontrado' });
+  }
+  
+  const deleted = medicos.splice(index, 1);
+  res.json({ message: 'Médico excluído com sucesso', data: deleted[0] });
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Servidor IntegraCare rodando na porta ${port}`);
