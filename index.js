@@ -4,6 +4,19 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+// Configuração CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 // Dados em memória temporários
 let pacientes = [
   { id: 1, nome: "Maria Silva", email: "maria@email.com", telefone: "(11) 99999-1111", cpf: "12345678901", created_at: new Date() },
